@@ -1,6 +1,5 @@
 package com.github.percivalgebashe.pages;
 
-import com.github.percivalgebashe.jsExecutors.JSExecutors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -43,11 +42,11 @@ public class FormPage extends BaseClass{
     @FindBy(xpath = "//textarea[@id='currentAddress']")
     private WebElement adddresTextField;
 
-    @FindBy(xpath = "//div[@id='state']//input")
+    @FindBy(xpath = "//div[contains(text(),'Select State')]")
     private WebElement stateSelector;
 
-    @FindBy(xpath = "//div[@id='city']//input")
-    private WebElement citySelectore;
+    @FindBy(xpath = "//div[contains(text(),'Select State')]")
+    private WebElement citySelector;
 
     @FindBy(xpath = "//button[@id='submit']")
     private WebElement submitBtn;
@@ -102,8 +101,8 @@ public class FormPage extends BaseClass{
         return stateSelector;
     }
 
-    public WebElement getCitySelectore() {
-        return citySelectore;
+    public WebElement getCitySelector() {
+        return citySelector;
     }
 
     public WebElement getSubmitBtn() {
@@ -142,7 +141,7 @@ public class FormPage extends BaseClass{
     public void enterDate(String date){
 
 //        JSExecutors.setAttribute("value",date, getDateSelector());
-        getDateSelector().clear();
+        getDateSelector().sendKeys(Keys.CLEAR);
         getDateSelector().sendKeys(date);
         getDateSelector().sendKeys(Keys.ENTER);
     }
@@ -163,7 +162,7 @@ public class FormPage extends BaseClass{
         }
     }
 
-    public void upPicture(){
+    public void uploadPicture(){
         File file = new File("./src/test/resources/testData/imgages/Toolsqa_logo.jpg");
         String filePath = file.getAbsolutePath();
         getUploadPictureBtn().sendKeys(filePath);
@@ -174,16 +173,26 @@ public class FormPage extends BaseClass{
     }
 
     public void setState(String state){
-        getStateSelector().sendKeys(state);
-        getStateSelector().sendKeys(Keys.ENTER);
+        getStateSelector().click();
+        List<WebElement> elements = getStateSelector().findElements((By.xpath("//div[contains(@class,'-menu')]")));
+        elements.forEach(e -> {
+            if(e.getText().equalsIgnoreCase(state)){
+                e.click();
+            }
+        });
     }
 
     public void setCity(String city){
-        getCitySelectore().sendKeys(city);
-//        getStateSelector().sendKeys(Keys.ENTER);
+        getCitySelector().click();
+        List<WebElement> elements = getStateSelector().findElements((By.xpath("//div[contains(@class,'-menu')]")));
+        elements.forEach(e -> {
+            if(e.getText().equalsIgnoreCase(city)){
+                e.click();
+            }
+        });
     }
 
-    public void subtForm(){
+    public void submitForm(){
         getSubmitBtn().submit();
     }
 

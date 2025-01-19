@@ -1,6 +1,8 @@
 package com.github.percivalgebashe.service;
 
 import com.github.percivalgebashe.pages.FormPage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
@@ -34,14 +36,15 @@ public class FormService extends FormPage {
         enterDate(date);
         enterSubject(subjects);
         enterHobbies(hobbies);
-        upPicture();
-        try {
-            Thread.sleep(5000);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }
+        uploadPicture();
         enterAddress(address);
         setState(state);
         setCity(city);
+    }
+
+    public boolean isShow(){
+        WebElement element = getDriver().findElement(
+                By.xpath("//div[contains(@class,'modal-title')]"));
+        return getWait().until(ExpectedConditions.visibilityOf(element)).isDisplayed();
     }
 }
