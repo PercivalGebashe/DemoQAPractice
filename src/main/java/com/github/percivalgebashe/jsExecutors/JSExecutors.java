@@ -15,6 +15,10 @@ public class JSExecutors extends BaseClass {
                 "', '"+
                 value+
                 "');", target);
+    }
 
+    public static void scrollTo(WebElement element){
+        JavascriptExecutor jse = (JavascriptExecutor) getDriver();
+        jse.executeScript("arguments[0].scrollIntoView();", element);
     }
 }

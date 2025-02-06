@@ -6,6 +6,7 @@ import io.cucumber.testng.CucumberOptions;
 
 @CucumberOptions(
         features = "./src/test/resources",
+        tags = "@SmokeTest",
         glue = {"com/github/percivalgebashe/stepDefinitions","com/github/percivalgebashe/hooks"},
         plugin = {"pretty"}
 )

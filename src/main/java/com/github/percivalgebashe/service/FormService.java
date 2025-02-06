@@ -1,16 +1,21 @@
 package com.github.percivalgebashe.service;
 
+import com.github.percivalgebashe.actions.Action;
+import com.github.percivalgebashe.jsExecutors.JSExecutors;
 import com.github.percivalgebashe.pages.FormPage;
+import com.github.percivalgebashe.pages.component.DatePicker;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 import java.util.Map;
 
 public class FormService extends FormPage {
-
+    private DatePicker datePickerComponent = new DatePicker();
     public void fillForm(Map<String,String> details){
+
         String firstName = details.get("firstName");
         String lastName = details.get("lastName");
         String email = details.get("email");
@@ -26,14 +31,14 @@ public class FormService extends FormPage {
         String state = details.get("state");
         String city = details.get("city");
 
-        getWait().until(ExpectedConditions.visibilityOf(getFirstNameTextField()));
+        JSExecutors.scrollTo(getEmailTextField());
 
         enterFirstName(firstName);
         enterLastName(lastName);
         enterEmail(email);
         selectGender(gender);
         enterMobile(mobile);
-        enterDate(date);
+        selectDate(date);
         enterSubject(subjects);
         enterHobbies(hobbies);
         uploadPicture();
@@ -46,5 +51,41 @@ public class FormService extends FormPage {
         WebElement element = getDriver().findElement(
                 By.xpath("//div[contains(@class,'modal-title')]"));
         return getWait().until(ExpectedConditions.visibilityOf(element)).isDisplayed();
+    }
+
+    private void openDatePicker() {
+        Action.click(getDateSelector());
+    }
+
+    private void selectMonth(String month) {
+        WebElement monthSelect = datePickerComponent.getMonthSelect();
+        Select select = new Select(monthSelect);
+        Action.click(monthSelect);
+        select.selectByVisibleText(month);
+    }
+
+    private void selectYear(String year) {
+        WebElement yearSelect = datePickerComponent.getYearSelect();
+        Select select = new Select(yearSelect);
+        Action.click(yearSelect);
+        select.selectByVisibleText(year);
+    }
+
+
+    public void selectDate(String date) {
+        openDatePicker();
+
+        String[] datePartsArray = date.split(" ");
+
+        selectMonth(datePartsArray[0]);
+        String dayOfMonth = datePartsArray[1].substring(0,2);
+        selectYear(datePartsArray[2]);
+        WebElement ActualDay = getDriver().findElement(By.xpath("//div[contains(@aria-label,'" + date+ "')]"));
+        Action.click(ActualDay);
+        try{
+            Thread.sleep(5000);
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }

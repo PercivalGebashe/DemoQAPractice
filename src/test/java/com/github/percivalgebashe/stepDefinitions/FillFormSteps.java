@@ -33,6 +33,11 @@ public class FillFormSteps extends BaseClass {
     @Then("I submit the form")
     public void submitForm(){
         service.submitForm();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         assertTrue(service.isShow());
     }
 }

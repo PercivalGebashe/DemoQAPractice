@@ -1,5 +1,6 @@
 package com.github.percivalgebashe.pages;
 
+import com.github.percivalgebashe.actions.Action;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -42,10 +43,10 @@ public class FormPage extends BaseClass{
     @FindBy(xpath = "//textarea[@id='currentAddress']")
     private WebElement adddresTextField;
 
-    @FindBy(xpath = "//div[contains(text(),'Select State')]")
+    @FindBy(xpath = "//div[@id='state']")
     private WebElement stateSelector;
 
-    @FindBy(xpath = "//div[contains(text(),'Select State')]")
+    @FindBy(xpath = "//div[@id='city']")
     private WebElement citySelector;
 
     @FindBy(xpath = "//button[@id='submit']")
@@ -110,15 +111,15 @@ public class FormPage extends BaseClass{
     }
 
     public void enterFirstName(String firstName){
-        getFirstNameTextField().sendKeys(firstName);
+        Action.sendKeys(getFirstNameTextField(), firstName);
     }
 
     public void enterLastName(String lastName){
-        getLastNameTextField().sendKeys(lastName);
+        Action.sendKeys(getLastNameTextField(), lastName);
     }
 
     public void enterEmail(String email){
-        getEmailTextField().sendKeys(email);
+        Action.sendKeys(getEmailTextField(), email);
     }
 
     public void selectGender(String gender){
@@ -128,27 +129,23 @@ public class FormPage extends BaseClass{
            WebElement sibling = element.findElement(By.xpath("following-sibling::label"));
            String radioGender = sibling.getText();
            if(radioGender.equalsIgnoreCase(gender)){
-               getWait().until(ExpectedConditions.elementToBeClickable(sibling));
-               sibling.click();
-           };
+               Action.click(sibling);
+           }
        }
     }
 
     public void enterMobile(String mobile){
-        getUserNumberTextField().sendKeys(mobile);
+        Action.sendKeys(getUserNumberTextField(), mobile);
     }
 
     public void enterDate(String date){
-
-//        JSExecutors.setAttribute("value",date, getDateSelector());
-        getDateSelector().sendKeys(Keys.CLEAR);
-        getDateSelector().sendKeys(date);
-        getDateSelector().sendKeys(Keys.ENTER);
+        Action.sendKeys(getDateSelector(), date);
     }
 
     public void enterSubject(String subject){
-        getSubjectsTextFiled().sendKeys(subject);
-        getSubjectsTextFiled().sendKeys(Keys.ENTER);
+        for (String s : subject.split(",")) {
+            Action.sendKeys(getSubjectsTextFiled(),s);
+        }
     }
 
     public void enterHobbies(List<String> hobbies){
@@ -157,7 +154,10 @@ public class FormPage extends BaseClass{
             WebElement sibling = element.findElement(
                     By.xpath("following-sibling::label"));
             if(hobbies.contains(sibling.getText())){
-                element.click();
+                System.out.println("Its true!");
+                Action.click(element);
+            }else{
+
             }
         }
     }
@@ -172,28 +172,31 @@ public class FormPage extends BaseClass{
         getAdddresTextField().sendKeys(address);
     }
 
-    public void setState(String state){
-        getStateSelector().click();
-        List<WebElement> elements = getStateSelector().findElements((By.xpath("//div[contains(@class,'-menu')]")));
-        elements.forEach(e -> {
-            if(e.getText().equalsIgnoreCase(state)){
-                e.click();
-            }
-        });
+    public void setState(String state) {
+        Action.click(getStateSelector());
+        getMenuItem(state);
     }
 
     public void setCity(String city){
-        getCitySelector().click();
-        List<WebElement> elements = getStateSelector().findElements((By.xpath("//div[contains(@class,'-menu')]")));
-        elements.forEach(e -> {
-            if(e.getText().equalsIgnoreCase(city)){
-                e.click();
-            }
-        });
+        Action.click(getCitySelector());
+        getMenuItem(city);
+
     }
 
     public void submitForm(){
         getSubmitBtn().submit();
+    }
+
+    public WebElement getMenu(){
+        return getWait().until(
+                ExpectedConditions
+                        .visibilityOfElementLocated(By.xpath("//div[contains(@class, '-menu')]")));
+    }
+
+    public WebElement getMenuItem(String item){
+        WebElement menu =  getMenu();
+        getWait().until(ExpectedConditions.visibilityOf(menu));
+        return menu.findElement(By.xpath("./child::*[contains(text()," + item + ")]"));
     }
 
 
