@@ -1,6 +1,7 @@
 package com.github.percivalgebashe.pages;
 
-import com.github.percivalgebashe.actions.Action;
+import com.github.percivalgebashe.util.actions.Action;
+import com.github.percivalgebashe.util.jsExecutors.JSExecutors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -35,11 +36,11 @@ public class BrowserWindows extends BaseClass{
     }
 
     public void clickNewTabBtn(){
-        Action.click(getNewTabBtn());
+        JSExecutors.click(getNewTabBtn());
     }
 
     public void clickNewWindowBtn(){
-        Action.click(getNewWindowBtn());
+        JSExecutors.click(getNewWindowBtn());
     }
 
     public void clickNewWindowWithMsgBtn(){

@@ -1,8 +1,8 @@
 package com.github.percivalgebashe.pages;
 
-import com.github.percivalgebashe.actions.Action;
+import com.github.percivalgebashe.util.actions.Action;
+import com.github.percivalgebashe.util.jsExecutors.JSExecutors;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -43,11 +43,11 @@ public class FormPage extends BaseClass{
     @FindBy(xpath = "//textarea[@id='currentAddress']")
     private WebElement adddresTextField;
 
-    @FindBy(xpath = "//div[@id='state']")
-    private WebElement stateSelector;
+    @FindBy(xpath = "//input[@id='react-select-3-input']")
+    private WebElement stateInput;
 
-    @FindBy(xpath = "//div[@id='city']")
-    private WebElement citySelector;
+    @FindBy(xpath = "//input[@id='react-select-4-input']")
+    private WebElement cityInput;
 
     @FindBy(xpath = "//button[@id='submit']")
     private WebElement submitBtn;
@@ -98,12 +98,12 @@ public class FormPage extends BaseClass{
         return adddresTextField;
     }
 
-    public WebElement getStateSelector() {
-        return stateSelector;
+    public WebElement getStateInput() {
+        return stateInput;
     }
 
-    public WebElement getCitySelector() {
-        return citySelector;
+    public WebElement getCityInput() {
+        return cityInput;
     }
 
     public WebElement getSubmitBtn() {
@@ -111,15 +111,15 @@ public class FormPage extends BaseClass{
     }
 
     public void enterFirstName(String firstName){
-        Action.sendKeys(getFirstNameTextField(), firstName);
+        JSExecutors.sendKeys(getFirstNameTextField(), firstName);
     }
 
     public void enterLastName(String lastName){
-        Action.sendKeys(getLastNameTextField(), lastName);
+        JSExecutors.sendKeys(getLastNameTextField(), lastName);
     }
 
     public void enterEmail(String email){
-        Action.sendKeys(getEmailTextField(), email);
+        JSExecutors.sendKeys(getEmailTextField(), email);
     }
 
     public void selectGender(String gender){
@@ -129,22 +129,23 @@ public class FormPage extends BaseClass{
            WebElement sibling = element.findElement(By.xpath("following-sibling::label"));
            String radioGender = sibling.getText();
            if(radioGender.equalsIgnoreCase(gender)){
-               Action.click(sibling);
+               JSExecutors.click(sibling);
            }
        }
     }
 
     public void enterMobile(String mobile){
-        Action.sendKeys(getUserNumberTextField(), mobile);
+        JSExecutors.sendKeys(getUserNumberTextField(), mobile);
     }
 
     public void enterDate(String date){
-        Action.sendKeys(getDateSelector(), date);
+        JSExecutors.sendKeys(getDateSelector(), date);
     }
 
-    public void enterSubject(String subject){
-        for (String s : subject.split(",")) {
-            Action.sendKeys(getSubjectsTextFiled(),s);
+    public void enterSubject(String subjects){
+        for (String subject : subjects.split(",")) {
+            JSExecutors.sendKeys(getSubjectsTextFiled(),subject);
+            Action.clickEnter(getSubjectsTextFiled());
         }
     }
 
@@ -155,7 +156,8 @@ public class FormPage extends BaseClass{
                     By.xpath("following-sibling::label"));
             if(hobbies.contains(sibling.getText())){
                 System.out.println("Its true!");
-                Action.click(element);
+//                Action.click(element);
+                JSExecutors.click(element);
             }else{
 
             }
@@ -173,30 +175,27 @@ public class FormPage extends BaseClass{
     }
 
     public void setState(String state) {
-        Action.click(getStateSelector());
-        getMenuItem(state);
+        JSExecutors.sendKeys(getStateInput(), state);
     }
 
     public void setCity(String city){
-        Action.click(getCitySelector());
-        getMenuItem(city);
-
+        JSExecutors.sendKeys(getCityInput(), city);
     }
 
     public void submitForm(){
         getSubmitBtn().submit();
     }
 
-    public WebElement getMenu(){
+    public WebElement getSelect(){
         return getWait().until(
                 ExpectedConditions
                         .visibilityOfElementLocated(By.xpath("//div[contains(@class, '-menu')]")));
     }
 
-    public WebElement getMenuItem(String item){
-        WebElement menu =  getMenu();
-        getWait().until(ExpectedConditions.visibilityOf(menu));
-        return menu.findElement(By.xpath("./child::*[contains(text()," + item + ")]"));
+    public WebElement getSelectItem(String item){
+        WebElement select =  getSelect();
+        getWait().until(ExpectedConditions.visibilityOf(select));
+        return select.findElement(By.xpath("./child::*[contains(text()," + item + ")]"));
     }
 
 

@@ -1,11 +1,10 @@
-package com.github.percivalgebashe.actions;
+package com.github.percivalgebashe.util.actions;
 
-import com.github.percivalgebashe.jsExecutors.JSExecutors;
+import com.github.percivalgebashe.util.jsExecutors.JSExecutors;
 import com.github.percivalgebashe.pages.BaseClass;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class Action extends BaseClass {
 
@@ -16,15 +15,24 @@ public class Action extends BaseClass {
     }
 
     public static void click(WebElement element){
-        JSExecutors.scrollTo(element);
-        actions.click(element)
+        actions.scrollToElement(element)
+                .click(element)
                 .perform();
     }
 
     public static void sendKeys(WebElement element, String keys){
-        actions.sendKeys(element,Keys.CLEAR)
+        actions.scrollToElement(element)
+                .sendKeys(element,Keys.CLEAR)
                 .sendKeys(keys)
                 .perform();
         actions.sendKeys(element,Keys.ENTER);
+    }
+
+    public static void clickEnter(WebElement element){
+        actions.sendKeys(element, Keys.ENTER);
+    }
+
+    public static Actions getActions(){
+        return actions;
     }
 }
