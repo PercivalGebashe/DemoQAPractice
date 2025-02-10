@@ -15,13 +15,12 @@ public class Action extends BaseClass {
     }
 
     public static void click(WebElement element){
-        actions.scrollToElement(element)
-                .click(element)
+        actions.click(element)
                 .perform();
     }
 
     public static void sendKeys(WebElement element, String keys){
-        actions.scrollToElement(element)
+        actions
                 .sendKeys(element,Keys.CLEAR)
                 .sendKeys(keys)
                 .perform();
@@ -29,7 +28,11 @@ public class Action extends BaseClass {
     }
 
     public static void clickEnter(WebElement element){
-        actions.sendKeys(element, Keys.ENTER);
+        actions.sendKeys(element, Keys.RETURN);
+    }
+
+    public static void scrollToElement(WebElement element){
+        actions.scrollToElement(element);
     }
 
     public static Actions getActions(){

@@ -143,9 +143,19 @@ public class FormPage extends BaseClass{
     }
 
     public void enterSubject(String subjects){
+        System.out.println("Subjects: " + subjects);
+        JSExecutors.scrollTo(getSubjectsTextFiled());
         for (String subject : subjects.split(",")) {
+            System.out.println("Subject: " + subject);
             JSExecutors.sendKeys(getSubjectsTextFiled(),subject);
             Action.clickEnter(getSubjectsTextFiled());
+            try {
+
+            Thread.sleep(3000);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+
+            }
         }
     }
 
