@@ -49,11 +49,6 @@ public class OpenTabsAndWindowsSteps extends BaseClass {
 
     @Then("A new window should open with url with massage {string}")
     public void confirmMessageInWindow(String msg){
-        try {
-            Thread.sleep(3000);
-        }catch (InterruptedException e){
-
-        }
         Set<String> windowHandles = getDriver().getWindowHandles();
         String window = "";
         for(String handle : windowHandles){

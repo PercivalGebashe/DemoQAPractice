@@ -24,11 +24,11 @@ public class Action extends BaseClass {
                 .sendKeys(element,Keys.CLEAR)
                 .sendKeys(keys)
                 .perform();
-        actions.sendKeys(element,Keys.ENTER);
     }
 
     public static void clickEnter(WebElement element){
-        actions.sendKeys(element, Keys.RETURN);
+        actions.sendKeys(element, Keys.ENTER)
+                .perform();
     }
 
     public static void scrollToElement(WebElement element){

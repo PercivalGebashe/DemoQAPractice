@@ -22,15 +22,10 @@ public class FormService extends FormPage {
         String mobile = details.get("mobile");
         String date = details.get("date");
         String subjects = details.get("subjects");
-
-        List<String> hobbies = List.of(
-                details.get("hobbies").split(","));
-
+        String hobbies = details.get("hobbies");
         String address = details.get("address");
         String state = details.get("state");
         String city = details.get("city");
-
-        JSExecutors.scrollTo(getSubjectsTextFiled());
 
         enterFirstName(firstName);
         enterLastName(lastName);
@@ -75,9 +70,9 @@ public class FormService extends FormPage {
         openDatePicker();
 
         String[] datePartsArray = date.split(" ");
-
         selectMonth(datePartsArray[0]);
         selectYear(datePartsArray[2]);
+
         WebElement ActualDay = getDriver().findElement(By.xpath("//div[contains(@aria-label,'" + date+ "')]"));
         JSExecutors.click(ActualDay);
     }

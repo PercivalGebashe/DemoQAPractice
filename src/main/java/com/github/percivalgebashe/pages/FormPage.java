@@ -111,25 +111,25 @@ public class FormPage extends BaseClass{
     }
 
     public void enterFirstName(String firstName){
+        JSExecutors.scrollTo(getFirstNameTextField());
         JSExecutors.sendKeys(getFirstNameTextField(), firstName);
     }
 
     public void enterLastName(String lastName){
+        JSExecutors.scrollTo(getLastNameTextField());
         JSExecutors.sendKeys(getLastNameTextField(), lastName);
     }
 
     public void enterEmail(String email){
+        JSExecutors.scrollTo(getEmailTextField());
         JSExecutors.sendKeys(getEmailTextField(), email);
     }
 
     public void selectGender(String gender){
-
        List<WebElement> elements = getGenderRadios();
        for(WebElement element : elements){
-           WebElement sibling = element.findElement(By.xpath("following-sibling::label"));
-           String radioGender = sibling.getText();
-           if(radioGender.equalsIgnoreCase(gender)){
-               JSExecutors.click(sibling);
+           if(element.getDomAttribute("value").equalsIgnoreCase(gender)){
+               JSExecutors.click(element);
            }
        }
     }
@@ -143,30 +143,20 @@ public class FormPage extends BaseClass{
     }
 
     public void enterSubject(String subjects){
-        System.out.println("Subjects: " + subjects);
         JSExecutors.scrollTo(getSubjectsTextFiled());
         for (String subject : subjects.split(",")) {
-            System.out.println("Subject: " + subject);
-            JSExecutors.sendKeys(getSubjectsTextFiled(),subject);
+            getSubjectsTextFiled().sendKeys(subject);
             Action.clickEnter(getSubjectsTextFiled());
-            try {
-
-            Thread.sleep(3000);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-
-            }
         }
     }
 
-    public void enterHobbies(List<String> hobbies){
+    public void enterHobbies(String hobbies){
 
         for(WebElement element : getHobbiesCheckBox()){
             WebElement sibling = element.findElement(
                     By.xpath("following-sibling::label"));
             if(hobbies.contains(sibling.getText())){
-                System.out.println("Its true!");
-//                Action.click(element);
+                JSExecutors.scrollTo(element);
                 JSExecutors.click(element);
             }else{
 
@@ -185,11 +175,16 @@ public class FormPage extends BaseClass{
     }
 
     public void setState(String state) {
+        JSExecutors.scrollTo(getStateInput());
         JSExecutors.sendKeys(getStateInput(), state);
+        Action.clickEnter(getStateInput());
     }
 
     public void setCity(String city){
+        JSExecutors.scrollTo(getCityInput());
         JSExecutors.sendKeys(getCityInput(), city);
+        Action.clickEnter(getCityInput());
+
     }
 
     public void submitForm(){
